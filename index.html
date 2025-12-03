@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masterpiece Furnitures - Premium Home Decor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">Masterpiece<span>Furnitures</span></a>
+            <div class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="products.html">Products</a>
+                <a href="cart.html" id="cart-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <div id="auth-buttons">
+                    <a href="login.html" class="btn-outline">Login</a>
+                    <a href="signup.html" class="btn-primary">Sign Up</a>
+                </div>
+                <div id="user-menu" style="display: none;">
+                    <a href="dashboard.html" id="user-email"></a>
+                    <button onclick="logout()" class="btn-outline">Logout</button>
+                </div>
+            </div>
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Crafting Timeless Elegance for Your Home</h1>
+            <p>Discover handcrafted furniture pieces that blend luxury with comfort</p>
+            <a href="products.html" class="btn-primary">Shop Collection</a>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-products">
+        <div class="container">
+            <h2>Featured Collection</h2>
+            <div class="products-grid" id="featured-products">
+                <!-- Products loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Masterpiece Furnitures</h3>
+                    <p>Crafting excellence since 2010</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="products.html">Products</a>
+                    <a href="cart.html">Shopping Cart</a>
+                    <a href="dashboard.html">My Account</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>contact@masterpiecefurnitures.com</p>
+                    <p>(555) 123-4567</p>
+                </div>
+            </div>
+            <p class="copyright">© 2024 Masterpiece Furnitures. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/products.js"></script>
+    <script>
+        // Load featured products
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFeaturedProducts();
+            updateAuthUI();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>
