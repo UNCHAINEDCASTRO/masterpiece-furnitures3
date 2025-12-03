@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - Masterpiece Furnitures</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">Masterpiece<span>Furnitures</span></a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="cart.html" id="cart-link">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </a>
+                <button onclick="logout()" class="btn-outline">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="padding: 3rem 0; min-height: 60vh;">
+        <h1>My Account</h1>
+        
+        <div id="user-info" style="background: white; padding: 2rem; border-radius: 8px; margin: 2rem 0;">
+            <h3>Welcome, <span id="user-name">User</span>!</h3>
+            <p>Email: <span id="user-email-display">Loading...</span></p>
+        </div>
+        
+        <div id="orders-section" style="margin-top: 3rem;">
+            <h2>My Orders</h2>
+            <div id="orders-list">
+                <p>No orders yet. <a href="products.html">Start shopping</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartCount();
+            loadUserData();
+            loadOrders();
+        });
+
+        function loadUserData() {
+            const user = firebase.auth().currentUser;
+            if(user) {
+                document.getElementById('user-email-display').textContent = user.email;
+                document.getElementById('user-name').textContent = user.email.split('@')[0];
+            } else {
+                window.location.href = "login.html";
+            }
+        }
+
+        function loadOrders() {
+            const user = firebase.auth().currentUser;
+            if(!user) return;
+            
+            db.collection('orders')
+                .where('userId', '==', user.uid)
+                .orderBy('createdAt', 'desc')
+                .get()
+                .then(snapshot => {
+                    const ordersList = document.getElementById('orders-list');
+                    if(snapshot.empty) {
+                        ordersList.innerHTML = '<p>No orders yet. <a href="products.html">Start shopping</a></p>';
+                        return;
+                    }
+                    
+                    ordersList.innerHTML = snapshot.docs.map(doc => {
+                        const order = doc.data();
+                        return `
+                            <div class="order-card" style="background: white; padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem;">
+                                <h4>Order #${doc.id.substring(0, 8)}</h4>
+                                <p>Date: ${order.createdAt?.toDate().toLocaleDateString() || 'N/A'}</p>
+                                <p>Total: $${order.total?.toFixed(2) || '0.00'}</p>
+                                <p>Status: ${order.status || 'pending'}</p>
+                                <p>Items: ${order.items?.length || 0}</p>
+                            </div>
+                        `;
+                    }).join('');
+                });
+        }
+    </script>
+</body>
+</html>
