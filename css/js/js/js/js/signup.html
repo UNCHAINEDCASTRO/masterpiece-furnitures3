@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Masterpiece Furnitures</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">Masterpiece<span>Furnitures</span></a>
+        </div>
+    </nav>
+
+    <div class="form-container">
+        <h2>Create Account</h2>
+        <form id="signup-form">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label>Password (min. 6 characters)</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%">Sign Up</button>
+        </form>
+        <p style="text-align:center; margin-top:1rem;">
+            Already have an account? <a href="login.html">Login here</a>
+        </p>
+    </div>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            signup(email, password, name)
+                .then(() => {
+                    // Redirect handled in signup function
+                });
+        });
+    </script>
+</body>
+</html>
